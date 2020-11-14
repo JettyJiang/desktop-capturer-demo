@@ -11,6 +11,8 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+let mainLearningWindow
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1280, height: 720})
@@ -32,6 +34,28 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+  mainWindow.webContents.openDevTools()
+
+  mainLearningWindow = new BrowserWindow({
+    // width: 800,
+    // height: 600,
+    show: false,
+
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false
+      // enableRemoteModule: true
+    }
+  })
+
+  mainLearningWindow.loadURL('https://mooc-stage.chinesecio.com/join/')
+  // mainLearningWindow.loadURL('https://mooc-app.chinesecio.com/mooc/public/index/login/index.html?room_id=20017')
+
+  mainLearningWindow.maximize()
+  mainLearningWindow.show()
+
+  // Open the DevTools.
+  mainLearningWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
